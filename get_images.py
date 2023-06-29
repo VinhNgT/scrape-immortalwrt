@@ -1,3 +1,5 @@
+# This program is used to download the images from the website
+
 import csv
 from distutils.util import strtobool
 import os

@@ -1,3 +1,5 @@
+# This spider is used to scrape the 18.06-SNAPSHOT target files structure from the ImmortalWRT website
+
 from scrapy import Spider, Request
 
 class _18_06_Spider(Spider):

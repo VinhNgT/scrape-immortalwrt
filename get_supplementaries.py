@@ -1,3 +1,5 @@
+# This program is used to download the supplementaries from the website
+
 import csv
 from distutils.util import strtobool
 import os

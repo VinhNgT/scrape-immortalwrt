@@ -1,3 +1,6 @@
+# This program is used to verify the output of the scrape program
+# It will check if the files in the output directory USING THE DOWNLOADED SHA256SUMS SCRAPED FROM THE WEBSITE
+
 import csv
 from distutils.util import strtobool
 import hashlib
@@ -145,7 +148,7 @@ def main():
     print_results(not_found, failed_sha256sum)
 
     # Wait for user input to exit
-    _ = input()
+    input("Press enter to exit...")
 
 
 if __name__ == '__main__':
