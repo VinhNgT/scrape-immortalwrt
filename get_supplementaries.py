@@ -7,16 +7,24 @@ import signal
 import wget
 import sys
 
-OUTPUT_DIR = './output/supplementaries/'
-PROGRESS_FILE = './get_supplementaries_progress.txt'
+OUTPUT_DIR = "./output/supplementaries/"
+PROGRESS_FILE = "./get_supplementaries_progress.txt"
 
 
 class LinkInfo:
-    base_url = 'https://downloads.immortalwrt.org/releases/18.06-SNAPSHOT/targets/'
+    base_url = "https://downloads.immortalwrt.org/releases/18.06-SNAPSHOT/targets/"
 
-    def __init__(self, rawLink: str, sha256sum: str, size: str, date: str, isFile: bool, isSupplementary: bool):
+    def __init__(
+        self,
+        rawLink: str,
+        sha256sum: str,
+        size: str,
+        date: str,
+        isFile: bool,
+        isSupplementary: bool,
+    ):
         self.rawLink = rawLink
-        self.link = rawLink[len(self.base_url):]
+        self.link = rawLink[len(self.base_url) :]
         self.sha256sum = sha256sum
         self.size = size
         self.date = date
@@ -25,45 +33,60 @@ class LinkInfo:
 
     def __str__(self) -> str:
         return self.link
-    
+
     def __repr__(self) -> str:
         return str(self)
-    
+
 
 completed_index = -1
+
+
 def ctr_c_handler(signum, frame):
     res = input("Ctrl-c was pressed. Do you really want to exit? y/n ")
-    if res == 'y':
+    if res == "y":
         save_progress()
         exit(1)
- 
+
+
 signal.signal(signal.SIGINT, ctr_c_handler)
 
 
 def save_progress():
-    with open(PROGRESS_FILE, 'w') as progress_file:
+    with open(PROGRESS_FILE, "w") as progress_file:
         progress_file.write(str(completed_index))
 
 
 def main():
     global completed_index
 
-    print("Getting current progress... ", end='')
+    print("Getting current progress... ", end="")
     if len(sys.argv) == 2:
         completed_index = int(sys.argv[1])
     else:
-        with open(PROGRESS_FILE, 'r') as progress_file:
+        with open(PROGRESS_FILE, "r") as progress_file:
             completed_index = int(progress_file.readline())
-    print(f'index {completed_index}')
+    print(f"index {completed_index}")
 
     print("Loading urls...")
     rawData = list(csv.reader(open("scrape/18_06.csv")))[1:]
-    data = list(map(lambda entry: LinkInfo(entry[0], entry[1], entry[2], entry[3], strtobool(entry[4]), strtobool(entry[5])), rawData))
+    data = list(
+        map(
+            lambda entry: LinkInfo(
+                entry[0],
+                entry[1],
+                entry[2],
+                entry[3],
+                strtobool(entry[4]),
+                strtobool(entry[5]),
+            ),
+            rawData,
+        )
+    )
 
     # Get supplementaries only
     data = list(filter(lambda entry: entry.isSupplementary, data))
-    
-    print('Creating folders...')
+
+    print("Creating folders...")
     folder_urls = list(filter(lambda entry: not entry.isFile, data))
 
     for fo_url in folder_urls:
@@ -73,13 +96,17 @@ def main():
         except:
             pass
 
-    print(f'Downloading files...')
+    print(f"Downloading files...")
     file_urls = list(filter(lambda entry: entry.isFile, data))
 
-    for index, fi_url in enumerate(file_urls[(completed_index + 1):], start=completed_index + 1):
-        print(f'Downloading index {index} ({index + 1} of {len(file_urls)}): {fi_url.link}')
+    for index, fi_url in enumerate(
+        file_urls[(completed_index + 1) :], start=completed_index + 1
+    ):
+        print(
+            f"Downloading index {index} ({index + 1} of {len(file_urls)}): {fi_url.link}"
+        )
         save_file_dir = OUTPUT_DIR + fi_url.link
-        
+
         if os.path.exists(save_file_dir):
             os.remove(save_file_dir)
 
@@ -92,7 +119,8 @@ def main():
             save_progress()
 
     save_progress()
-    print('Done !')
+    print("Done !")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

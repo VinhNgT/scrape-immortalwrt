@@ -2,6 +2,7 @@
 
 from scrapy import Spider, Request
 
+
 class _18_06_Spider(Spider):
     name = "18_06_Spider"
     start_urls = ["https://downloads.immortalwrt.org/releases/18.06-SNAPSHOT/targets/"]
@@ -25,7 +26,7 @@ class _18_06_Spider(Spider):
             sublinks = table.xpath(".//a")
 
             for link in sublinks:
-                fullLink = response.request.url + link.xpath('./@href').get()
+                fullLink = response.request.url + link.xpath("./@href").get()
                 sha256sum = link.xpath("./ancestor::*[2]/td[@class='sh']/text()").get()
                 size = link.xpath("./ancestor::*[2]/td[@class='s']/text()").get()
                 date = link.xpath("./ancestor::*[2]/td[@class='d']/text()").get()
@@ -41,12 +42,12 @@ class _18_06_Spider(Spider):
 
                 yield linkInfo
 
-                if not linkInfo['isFile']:
+                if not linkInfo["isFile"]:
                     yield Request(
                         fullLink,
                         callback=self.parse,
                         meta={
-                            "isSupplementary": linkInfo['isSupplementary'],
+                            "isSupplementary": linkInfo["isSupplementary"],
                         },
                     )
 
@@ -55,7 +56,7 @@ class _18_06_Spider(Spider):
         # print("################################################### parse end")
 
     def normalize_null(self, input: str):
-        if input == '-':
+        if input == "-":
             return None
-        
+
         return input
