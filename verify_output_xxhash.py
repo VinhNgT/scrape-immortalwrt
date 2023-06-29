@@ -5,6 +5,7 @@ import os
 import xxhash
 
 OUTPUT_DIR = "./output/"
+HASH_FILE = "./checksums_xxh3_64.csv"
 
 
 # Function to verify the integrity of the output files, print the files that does not match or missing
@@ -13,7 +14,7 @@ def main():
 
     # Get hash dict from checksums_xxh3_64.csv
     hashes = {}
-    with open("./checksums_xxh3_64.csv", "r") as f:
+    with open(HASH_FILE, "r") as f:
         for line in f.readlines():
             filename, xxh3_64 = line.strip().split(",")
             hashes[filename.replace("\\", "/")] = xxh3_64

@@ -1,10 +1,10 @@
-# This program is used to create the checksums_xxh3_64.csv file
-# to verification the integrity of the output files after extraction
+# This program is used to create checksums_xxh3_64.csv of the output files
 
 import os
 import xxhash
 
 OUTPUT_DIR = "./output/"
+HASH_FILE = "./checksums_xxh3_64.csv"
 
 
 # Class to save hash info
@@ -21,7 +21,7 @@ class HashInfo:
 
 
 # Function to generate hash of all files in OUTPUT_DIR using xxh3_64 algorithm
-# and save it to OUTPUT_DIR/output_xxhash.csv
+# and save it to checksums_xxh3_64.csv
 def main():
     print("Generating hashes...")
 
@@ -41,7 +41,7 @@ def main():
     # Save hashes to file
     print("Saving hashes to file...")
 
-    with open("./checksums_xxh3_64.csv", "w") as f:
+    with open(HASH_FILE, "w") as f:
         f.write("\n".join([str(hash) for hash in hashes]))
 
 
