@@ -1,0 +1,19 @@
+Scrape files structure from https://downloads.immortalwrt.org/releases/18.06-SNAPSHOT/targets/
+- Run Spider scrape/scrape/spiders/18_06_spider.py to get files structure
+- The result file is saved at scrape/18_06.csv
+
+Download all files listed in scrape/18_06.csv
+- Run get_images.py to get all images
+- Run get_supplementaries.py to get all supplementaries
+- Progress is saved at get_images_progress.txt and get_supplementaries_progress.txt correspondingly
+- Reset 2 files to '-1' to start from the beginning
+
+Verify downloaded files using scraped sha256sums
+- Run verify_output_scraped.py
+
+Create XXH3 checksums for 'output' folder
+- Run create_output_xxhash.py
+- Result is saved in checksums_xxh3_64.csv
+
+Verify XXH3 checksums for 'output' folder
+- Run verify_output_xxhash.py
